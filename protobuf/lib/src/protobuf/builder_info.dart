@@ -210,10 +210,16 @@ class BuilderInfo {
       List<ProtobufEnum> enumValues,
       PackageName packageName = const PackageName(''),
       String protoName}) {
+    ProtobufEnum defaultEnumValue;
+    if (valueFieldType == PbFieldType._OPTIONAL_ENUM || valueFieldType == PbFieldType._REQUIRED_ENUM) {
+      if (defaultEnumValue == null && enumValues?.isNotEmpty == true) {
+        defaultEnumValue = enumValues.first;
+      }
+    }
     BuilderInfo mapEntryBuilderInfo = BuilderInfo(entryClassName,
         package: packageName)
       ..add(PbMap._keyFieldNumber, 'key', keyFieldType, null, null, null, null)
-      ..add(PbMap._valueFieldNumber, 'value', valueFieldType, null,
+      ..add(PbMap._valueFieldNumber, 'value', valueFieldType, () => defaultEnumValue,
           valueCreator, valueOf, enumValues);
 
     addMapField<K, V>(tagNumber, name, keyFieldType, valueFieldType,
