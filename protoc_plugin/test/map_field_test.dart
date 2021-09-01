@@ -330,4 +330,9 @@ void main() {
     testValues(TestMap.fromBuffer(testMap.writeToBuffer()));
     testValues(TestMap.fromJson(testMap.writeToJson()));
   });
+
+  test('parse unknown enum values', () {
+    final m = TestMap.fromBuffer([34, 4, 8, 1, 16, 4]);
+    expect(m.int32ToEnumField[1], TestMap_EnumValue.DEFAULT);
+  });
 }
